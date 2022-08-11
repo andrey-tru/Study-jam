@@ -1,24 +1,40 @@
 name: surf_practice_chat_flutter
 description: A new Flutter project.
 
-publish_to: 'none'
+publish_to: "none"
 
 version: 1.0.0+1
 
 environment:
-  sdk: ">=2.12.0 <3.0.0"
+  sdk: ">=2.17.0 <3.0.0"
 
 dependencies:
+  build_runner: ^2.2.0
+  cupertino_icons: ^1.0.2
+  easy_localization: ^3.0.1
+  flash: ^2.0.3+3
   flutter:
     sdk: flutter
+  flutter_bloc: ^8.0.1
+  freezed: ^2.1.0+1
+  freezed_annotation: ^2.1.0
+  geolocator: ^9.0.1
+  get_it: ^7.2.0
+  html_unescape: ^2.0.0
+  injectable: ^1.5.3
+  map_launcher: ^2.3.0+1
+  reactive_forms: ^14.1.0
+  shared_preferences: ^2.0.15
   surf_study_jam: ^0.1.0
-  cupertino_icons: ^1.0.2
 
 dev_dependencies:
   flutter_test:
     sdk: flutter
+  injectable_generator:
+  lint: ^1.10.0
 
-  flutter_lints: ^2.0.1
 flutter:
-
   uses-material-design: true
+
+  assets:
+    - assets/translations/

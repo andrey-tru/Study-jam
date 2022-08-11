@@ -58,16 +58,14 @@ abstract class IChatRepository {
   Future<ChatUserDto> getUser(int userId);
 }
 
-/// Simple implementation of [IChatRepository], using [StudyJamClient].
 class ChatRepository implements IChatRepository {
-  final StudyJamClient _studyJamClient;
-
-  /// Constructor for [ChatRepository].
   ChatRepository(this._studyJamClient);
+
+  final StudyJamClient _studyJamClient;
 
   @override
   Future<Iterable<ChatMessageDto>> getMessages() async {
-    final messages = await _fetchAllMessages();
+    final Iterable<ChatMessageDto> messages = await _fetchAllMessages();
 
     return messages;
   }
@@ -79,7 +77,7 @@ class ChatRepository implements IChatRepository {
     }
     await _studyJamClient.sendMessage(SjMessageSendsDto(text: message));
 
-    final messages = await _fetchAllMessages();
+    final Iterable<ChatMessageDto> messages = await _fetchAllMessages();
 
     return messages;
   }
@@ -92,40 +90,45 @@ class ChatRepository implements IChatRepository {
     if (message != null && message.length > IChatRepository.maxMessageLength) {
       throw InvalidMessageException('Message "$message" is too large.');
     }
-    await _studyJamClient.sendMessage(SjMessageSendsDto(
-      text: message,
-      geopoint: location.toGeopoint(),
-    ));
+    await _studyJamClient.sendMessage(
+      SjMessageSendsDto(
+        text: message,
+        geopoint: location.toGeopoint(),
+      ),
+    );
 
-    final messages = await _fetchAllMessages();
+    final Iterable<ChatMessageDto> messages = await _fetchAllMessages();
 
     return messages;
   }
 
   @override
   Future<ChatUserDto> getUser(int userId) async {
-    final user = await _studyJamClient.getUser(userId);
+    final SjUserDto? user = await _studyJamClient.getUser(userId);
     if (user == null) {
       throw UserNotFoundException('User with id $userId had not been found.');
     }
-    final localUser = await _studyJamClient.getUser();
+    final SjUserDto? localUser = await _studyJamClient.getUser();
     return localUser?.id == user.id
         ? ChatUserLocalDto.fromSJClient(user)
         : ChatUserDto.fromSJClient(user);
   }
 
   Future<Iterable<ChatMessageDto>> _fetchAllMessages() async {
-    final messages = <SjMessageDto>[];
+    final List<SjMessageDto> messages = <SjMessageDto>[];
 
-    var isLimitBroken = false;
-    var lastMessageId = 0;
+    bool isLimitBroken = false;
+    int lastMessageId = 0;
 
     // Chat is loaded in a 10 000 messages batches. It takes several batches to
     // load chat completely, especially if there's a lot of messages. Due to
     // API-request limitations, we can't load everything at one request, so
     // we're doing it in cycle.
     while (!isLimitBroken) {
-      final batch = await _studyJamClient.getMessages(lastMessageId: lastMessageId, limit: 10000);
+      final List<SjMessageDto> batch = await _studyJamClient.getMessages(
+        lastMessageId: lastMessageId,
+        limit: 10000,
+      );
       messages.addAll(batch);
       lastMessageId = batch.last.chatId;
       if (batch.length < 10000) {
@@ -134,26 +137,35 @@ class ChatRepository implements IChatRepository {
     }
 
     // Message ID : User ID
-    final messagesWithUsers = <int, int>{};
-    for (final message in messages) {
+    final Map<int, int> messagesWithUsers = <int, int>{};
+    for (final SjMessageDto message in messages) {
       messagesWithUsers[message.id] = message.userId;
     }
-    final users = await _studyJamClient.getUsers(messagesWithUsers.values.toSet().toList());
-    final localUser = await _studyJamClient.getUser();
+    final List<SjUserDto> users = await _studyJamClient
+        .getUsers(messagesWithUsers.values.toSet().toList());
+    final SjUserDto? localUser = await _studyJamClient.getUser();
 
     return messages
         .map(
-          (sjMessageDto) => sjMessageDto.geopoint == null
+          (SjMessageDto sjMessageDto) => sjMessageDto.geopoint == null
               ? ChatMessageDto.fromSJClient(
                   sjMessageDto: sjMessageDto,
-                  sjUserDto: users.firstWhere((userDto) => userDto.id == sjMessageDto.userId),
-                  isUserLocal:
-                      users.firstWhere((userDto) => userDto.id == sjMessageDto.userId).id ==
-                          localUser?.id,
+                  sjUserDto: users.firstWhere(
+                    (SjUserDto userDto) => userDto.id == sjMessageDto.userId,
+                  ),
+                  isUserLocal: users
+                          .firstWhere(
+                            (SjUserDto userDto) =>
+                                userDto.id == sjMessageDto.userId,
+                          )
+                          .id ==
+                      localUser?.id,
                 )
               : ChatMessageGeolocationDto.fromSJClient(
                   sjMessageDto: sjMessageDto,
-                  sjUserDto: users.firstWhere((userDto) => userDto.id == sjMessageDto.userId),
+                  sjUserDto: users.firstWhere(
+                    (SjUserDto userDto) => userDto.id == sjMessageDto.userId,
+                  ),
                 ),
         )
         .toList();

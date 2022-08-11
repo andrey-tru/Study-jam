@@ -1,0 +1,15 @@
+{
+    "auth": {
+        "email": "E-mail",
+        "password": "Password",
+        "btn": "To come in"
+    },
+    "chat": {
+        "message": "Message",
+        "urlImg": "Insert image link",
+        "url": "Link",
+        "insert": "Insert",
+        "addGeo": "Add geolocation",
+        "doneGeo": "Coordinates added"
+    }
+}

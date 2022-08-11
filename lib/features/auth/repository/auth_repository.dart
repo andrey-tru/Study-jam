@@ -29,10 +29,9 @@ abstract class IAuthRepository {
 
 /// Simple implementation of [IAuthRepository], using [StudyJamClient].
 class AuthRepository implements IAuthRepository {
-  final StudyJamClient _studyJamClient;
-
-  /// Constructor for [AuthRepository].
   AuthRepository(this._studyJamClient);
+
+  final StudyJamClient _studyJamClient;
 
   @override
   Future<TokenDto> signIn({
@@ -40,11 +39,11 @@ class AuthRepository implements IAuthRepository {
     required String password,
   }) async {
     try {
-      final token = await _studyJamClient.signin(login, password);
+      final String token = await _studyJamClient.signin(login, password);
 
       return TokenDto(token: token);
     } on Exception catch (e) {
-      throw AuthException(e.toString());
+      return TokenDto(error: e.toString());
     }
   }
 

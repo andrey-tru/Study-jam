@@ -3,24 +3,16 @@ import 'package:surf_practice_chat_flutter/features/chat/models/chat_message_dto
 import 'package:surf_practice_chat_flutter/features/chat/models/chat_user_dto.dart';
 import 'package:surf_study_jam/surf_study_jam.dart';
 
-/// Data transfer object representing geolocation chat message.
 class ChatMessageGeolocationDto extends ChatMessageDto {
-  /// Location point.
-  final ChatGeolocationDto location;
-
-  /// Constructor for [ChatMessageGeolocationDto].
   ChatMessageGeolocationDto({
-    required ChatUserDto chatUserDto,
+    required super.chatUserDto,
     required this.location,
-    required String message,
+    required String super.message,
     required DateTime createdDate,
   }) : super(
-          chatUserDto: chatUserDto,
-          message: message,
           createdDateTime: createdDate,
         );
 
-  /// Named constructor for converting DTO from [StudyJamClient].
   ChatMessageGeolocationDto.fromSJClient({
     required SjMessageDto sjMessageDto,
     required SjUserDto sjUserDto,
@@ -31,6 +23,10 @@ class ChatMessageGeolocationDto extends ChatMessageDto {
           chatUserDto: ChatUserDto.fromSJClient(sjUserDto),
         );
 
+  final ChatGeolocationDto location;
+
   @override
-  String toString() => 'ChatMessageGeolocationDto(location: $location) extends ${super.toString()}';
+  String toString() =>
+      // ignore: lines_longer_than_80_chars
+      'ChatMessageGeolocationDto(location: $location) extends ${super.toString()}';
 }

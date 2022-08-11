@@ -1,10 +1,10 @@
 /// Exception, that occurs when message is invalid.
 class InvalidNameException implements Exception {
   /// Message, describing exception's explanation.
+  const InvalidNameException(this.message);
   final String message;
 
   /// Constructor for [InvalidNameException].
-  const InvalidNameException(this.message);
 
   @override
   String toString() => 'InvalidNameException(message: $message)';

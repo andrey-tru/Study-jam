@@ -2,25 +2,13 @@ import 'package:surf_practice_chat_flutter/features/chat/models/chat_user_dto.da
 import 'package:surf_practice_chat_flutter/features/chat/models/chat_user_local_dto.dart';
 import 'package:surf_study_jam/surf_study_jam.dart';
 
-/// Data transfer object representing simple chat message.
 class ChatMessageDto {
-  /// Author of message.
-  final ChatUserDto chatUserDto;
-
-  /// Chat message string.
-  final String? message;
-
-  /// Creation date and time.
-  final DateTime createdDateTime;
-
-  /// Constructor for [ChatMessageDto].
   const ChatMessageDto({
     required this.chatUserDto,
     required this.message,
     required this.createdDateTime,
   });
 
-  /// Named constructor for converting DTO from [StudyJamClient].
   ChatMessageDto.fromSJClient({
     required SjMessageDto sjMessageDto,
     required SjUserDto sjUserDto,
@@ -31,7 +19,12 @@ class ChatMessageDto {
         message = sjMessageDto.text,
         createdDateTime = sjMessageDto.created;
 
+  final ChatUserDto chatUserDto;
+  final String? message;
+  final DateTime createdDateTime;
+
   @override
   String toString() =>
+      // ignore: lines_longer_than_80_chars
       'ChatMessageDto(chatUserDto: $chatUserDto, message: $message, createdDate: $createdDateTime)';
 }

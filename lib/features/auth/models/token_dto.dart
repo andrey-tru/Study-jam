@@ -6,15 +6,17 @@ import 'package:flutter/foundation.dart';
 @immutable
 class TokenDto {
   /// Token's value.
-  final String token;
+  const TokenDto({
+    this.token,
+    this.error,
+  });
+  final String? token;
+  final String? error;
 
   /// Constructor for [TokenDto].
-  const TokenDto({
-    required this.token,
-  });
 
   @override
   String toString() {
-    return 'TokenDto(token: $token)';
+    return 'TokenDto(token: $token, error: $error)';
   }
 }
