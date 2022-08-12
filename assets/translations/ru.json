@@ -1,6 +1,6 @@
 {
     "auth": {
-        "email": "E-mail",
+        "email": "Логин",
         "password": "Пароль",
         "btn": "Войти"
     },

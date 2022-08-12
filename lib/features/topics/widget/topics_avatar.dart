@@ -22,8 +22,8 @@ class TopicsAvatar extends StatelessWidget {
       ),
       child: Center(
         child: Text(
-          chat.name == null
-              ? 'Incognito chat'
+          chat.name == '' || chat.name == null
+              ? ''
               : chat.name!.split(' ').last[0] == '"'
                   ? chat.name!.split(' ').last[1]
                   : chat.name!.split(' ').last[0],

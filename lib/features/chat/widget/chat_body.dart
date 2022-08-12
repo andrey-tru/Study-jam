@@ -6,8 +6,26 @@ import 'package:map_launcher/map_launcher.dart';
 import 'package:surf_practice_chat_flutter/features/chat/chat.dart';
 import 'package:surf_practice_chat_flutter/features/widgets/widgets.dart';
 
-class ChatBody extends StatelessWidget {
-  const ChatBody();
+class ChatBody extends StatefulWidget {
+  const ChatBody({super.key});
+
+  @override
+  State<ChatBody> createState() => _ChatBodyState();
+}
+
+class _ChatBodyState extends State<ChatBody> {
+  static final ScrollController _controller = ScrollController();
+  String _progress = '0%';
+
+  @override
+  void initState() {
+    _controller.addListener(() {
+      if (_controller.offset <= -100) {
+        GetIt.I<ChatCubit>().getMessages();
+      }
+    });
+    super.initState();
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -15,20 +33,44 @@ class ChatBody extends StatelessWidget {
       bloc: GetIt.I<ChatCubit>(),
       builder: (BuildContext context, ChatState state) {
         if (state.isLoading) {
+          _progress = '0%';
           return const UiLoader();
         }
 
-        return ListView.builder(
-          padding: EdgeInsets.zero,
-          reverse: true,
-          itemCount: state.messages.length,
-          itemBuilder: (_, int index) {
-            return _ChatMessage(
-              userName: state.userName,
-              chatData:
-                  state.messages.elementAt(state.messages.length - 1 - index),
-            );
+        return NotificationListener<ScrollNotification>(
+          onNotification: (ScrollNotification notification) {
+            if (_controller.offset <= 0) {
+              setState(() {
+                _progress = '${(_controller.offset).toStringAsFixed(0)}%';
+              });
+            }
+            return true;
           },
+          child: Stack(
+            children: <Widget>[
+              ListView.builder(
+                controller: _controller,
+                padding: EdgeInsets.zero,
+                reverse: true,
+                itemCount: state.messages.length,
+                itemBuilder: (_, int index) {
+                  return _ChatMessage(
+                    userName: state.userName,
+                    chatData: state.messages
+                        .elementAt(state.messages.length - 1 - index),
+                  );
+                },
+              ),
+              if (_progress != '0%')
+                Align(
+                  alignment: Alignment.bottomCenter,
+                  child: Text(
+                    _progress,
+                    style: const TextStyle(color: Colors.white),
+                  ),
+                )
+            ],
+          ),
         );
       },
     );
@@ -82,8 +124,7 @@ class _ChatMessage extends StatelessWidget {
             _ChatAvatar(
               userData: chatData.chatUserDto.name ?? 'Incognito user',
             ),
-          if (chatData.chatUserDto.name != userName)
-            const SizedBox(width: 10),
+          if (chatData.chatUserDto.name != userName) const SizedBox(width: 10),
           Expanded(
             child: Container(
               padding: const EdgeInsets.all(10.0),
@@ -152,8 +193,7 @@ class _ChatMessage extends StatelessWidget {
               ),
             ),
           ),
-          if (chatData.chatUserDto.name == userName)
-            const SizedBox(width: 10),
+          if (chatData.chatUserDto.name == userName) const SizedBox(width: 10),
           if (chatData.chatUserDto.name == userName)
             _ChatAvatar(
               userData: chatData.chatUserDto.name ?? 'Incognito user',
@@ -186,7 +226,7 @@ class _ChatAvatar extends StatelessWidget {
       ),
       child: Center(
         child: Text(
-          '${userData.split(' ').first[0]}${userData.split(' ').last[0]}',
+          userData.split(' ').first[0],
           style: const TextStyle(
             color: Colors.white,
             fontWeight: FontWeight.bold,

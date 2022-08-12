@@ -16,10 +16,6 @@ class ChatScreen extends StatefulWidget {
 }
 
 class _ChatScreenState extends State<ChatScreen> {
-  void _onUpdatePressed() {
-    GetIt.I<ChatCubit>().getMessages();
-  }
-
   void _onSendPressed(String messageText) {
     GetIt.I<ChatCubit>().sendMessage(messageText);
   }
@@ -27,7 +23,8 @@ class _ChatScreenState extends State<ChatScreen> {
   @override
   void initState() {
     GetIt.I<ChatCubit>().chatRepository(widget.chatRepository);
-    _onUpdatePressed();
+
+    GetIt.I<ChatCubit>().getMessages();
 
     super.initState();
   }
@@ -49,20 +46,11 @@ class _ChatScreenState extends State<ChatScreen> {
             Padding(
               padding:
                   const EdgeInsets.symmetric(horizontal: 20.0, vertical: 70.0),
-              child: Row(
-                mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                children: <Widget>[
-                  Builder(
-                    builder: (BuildContext context) => CircularBtn(
-                      icons: Icons.menu,
-                      onTap: () => Scaffold.of(context).openDrawer(),
-                    ),
-                  ),
-                  CircularBtn(
-                    icons: Icons.refresh,
-                    onTap: () => _onUpdatePressed(),
-                  ),
-                ],
+              child: Builder(
+                builder: (BuildContext context) => CircularBtn(
+                  icons: Icons.menu,
+                  onTap: () => Scaffold.of(context).openDrawer(),
+                ),
               ),
             )
           ],
