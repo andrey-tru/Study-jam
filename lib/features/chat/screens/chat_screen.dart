@@ -84,7 +84,7 @@ class _CircularBtnState extends State<CircularBtn>
   void initState() {
     controller.repeat(reverse: true);
     animation =
-        ColorTween(begin: Colors.white, end: Colors.black).animate(controller);
+        ColorTween(begin: Colors.green, end: Colors.yellow).animate(controller);
 
     super.initState();
   }
@@ -103,13 +103,10 @@ class _CircularBtnState extends State<CircularBtn>
             height: size,
             decoration: BoxDecoration(
               borderRadius: BorderRadius.circular(100),
-              color: Colors.green,
+              color: animation.value,
               border: Border.all(width: 2.0),
             ),
-            child: Icon(
-              widget.icons,
-              color: animation.value,
-            ),
+            child: Icon(widget.icons, color: Colors.black87),
           ),
         );
       },
