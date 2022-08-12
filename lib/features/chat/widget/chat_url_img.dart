@@ -38,7 +38,7 @@ class ChatUrlImg extends StatelessWidget {
             ),
             const SizedBox(height: 30),
             Text(
-              tr('chart.urlImg'),
+              tr('chat.urlImg'),
               style: const TextStyle(
                 fontWeight: FontWeight.bold,
                 fontSize: 18,
@@ -50,7 +50,7 @@ class ChatUrlImg extends StatelessWidget {
               style: const TextStyle(color: Colors.white),
               controller: textEditingController,
               decoration: InputDecoration(
-                hintText: tr('chart.url'),
+                hintText: tr('chat.url'),
                 hintStyle: const TextStyle(color: Colors.white),
                 focusedBorder: const UnderlineInputBorder(
                   borderSide: BorderSide(color: Colors.green),
@@ -62,7 +62,7 @@ class ChatUrlImg extends StatelessWidget {
             ),
             const SizedBox(height: 30),
             UiButton(
-              title: tr('chart.insert'),
+              title: tr('chat.insert'),
               onPressed: onPressedBtn,
             ),
           ],

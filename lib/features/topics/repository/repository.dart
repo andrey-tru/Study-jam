@@ -1,1 +1,1 @@
-export 'chart_topics_repository.dart';
+export 'chat_topics_repository.dart';
