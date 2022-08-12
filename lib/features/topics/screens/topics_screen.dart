@@ -62,6 +62,7 @@ class _TopicsScreenState extends State<TopicsScreen> {
                       ),
                     ],
                   ),
+                  const CreateTopicScreen(),
                   const SizedBox(height: 20.0),
                   ...state.chats.map(
                     (ChatTopicDto chat) => GestureDetector(

@@ -4,6 +4,7 @@ import 'package:get_it/get_it.dart';
 import 'package:injectable/injectable.dart';
 import 'package:surf_practice_chat_flutter/features/auth/auth.dart';
 import 'package:surf_practice_chat_flutter/features/topics/topics.dart';
+import 'package:surf_practice_chat_flutter/features/utils/utils.dart';
 import 'package:surf_study_jam/surf_study_jam.dart';
 
 part 'topics_state.dart';
@@ -31,6 +32,16 @@ class TopicsCubit extends Cubit<TopicsState> {
         isLoading: false,
       ),
     );
+  }
+
+  Future<void> createTopic(String name) async {
+    emit(state.copyWith(isLoading: true));
+
+    await state.chatTopicsRepository!.createTopic(ChatTopicSendDto(name: name));
+
+    NotifyService.showSuccessNotify('success');
+
+    getTopics();
   }
 
   void activeChat(int id) {

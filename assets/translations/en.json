@@ -11,5 +11,7 @@
         "insert": "Insert",
         "addGeo": "Add geolocation",
         "doneGeo": "Coordinates added"
-    }
+    },
+    "addChat": "Create a chat",
+    "chatName": "Chat name"
 }
