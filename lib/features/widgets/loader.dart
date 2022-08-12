@@ -11,9 +11,9 @@ class UiLoader extends StatelessWidget {
     return Center(
       child: CircularProgressIndicator.adaptive(
         value: value,
-        backgroundColor: Colors.transparent,
+        backgroundColor: Colors.white,
         valueColor: const AlwaysStoppedAnimation<Color?>(
-          Colors.amber,
+          Colors.green,
         ),
       ),
     );

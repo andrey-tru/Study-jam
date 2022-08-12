@@ -5,9 +5,11 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:freezed_annotation/freezed_annotation.dart';
 import 'package:geolocator/geolocator.dart';
+import 'package:get_it/get_it.dart';
 import 'package:injectable/injectable.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import 'package:surf_practice_chat_flutter/features/chat/chat.dart';
+import 'package:surf_practice_chat_flutter/features/topics/topics.dart';
 
 part 'chat_state.dart';
 part 'chat_cubit.freezed.dart';
@@ -44,6 +46,7 @@ class ChatCubit extends Cubit<ChatState> {
     }
 
     await localStorageService.setString('userColor', jsonEncode(userColor));
+
 
     emit(
       state.copyWith(

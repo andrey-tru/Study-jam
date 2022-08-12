@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:get_it/get_it.dart';
 import 'package:surf_practice_chat_flutter/features/auth/auth.dart';
 import 'package:surf_practice_chat_flutter/features/chat/chat.dart';
+import 'package:surf_practice_chat_flutter/features/topics/topics.dart';
 
 class ChatScreen extends StatefulWidget {
   const ChatScreen({
@@ -27,6 +28,7 @@ class _ChatScreenState extends State<ChatScreen> {
   void _onOut() {
     GetIt.I<AuthCubit>().signOut();
     Navigator.pop(context);
+    // Icons.output
   }
 
   @override
@@ -57,9 +59,11 @@ class _ChatScreenState extends State<ChatScreen> {
               child: Row(
                 mainAxisAlignment: MainAxisAlignment.spaceBetween,
                 children: <Widget>[
-                  CircularBtn(
-                    icons: Icons.output,
-                    onTap: () => _onOut(),
+                  Builder(
+                    builder: (BuildContext context) => CircularBtn(
+                      icons: Icons.menu,
+                      onTap: () => Scaffold.of(context).openDrawer(),
+                    ),
                   ),
                   CircularBtn(
                     icons: Icons.refresh,
@@ -71,6 +75,7 @@ class _ChatScreenState extends State<ChatScreen> {
           ],
         ),
       ),
+      drawer: const TopicsScreen(),
     );
   }
 }
@@ -86,7 +91,7 @@ class CircularBtn extends StatelessWidget {
     const double size = 70.0;
 
     return GestureDetector(
-      onTap: () => onTap(),
+      onTap: onTap,
       child: Container(
         width: size,
         height: size,
