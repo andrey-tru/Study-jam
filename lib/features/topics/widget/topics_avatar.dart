@@ -24,9 +24,9 @@ class TopicsAvatar extends StatelessWidget {
         child: Text(
           chat.name == '' || chat.name == null
               ? ''
-              : chat.name!.split(' ').last[0] == '"'
-                  ? chat.name!.split(' ').last[1]
-                  : chat.name!.split(' ').last[0],
+              : chat.name!.split(' ').first[0] == '"'
+                  ? chat.name!.split(' ').first[1]
+                  : chat.name!.split(' ').first[0],
           style: const TextStyle(
             color: Colors.white,
             fontWeight: FontWeight.bold,
