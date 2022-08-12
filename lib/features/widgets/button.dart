@@ -37,6 +37,12 @@ class _UiButtonState extends State<UiButton>
   }
 
   @override
+  void dispose() {
+    controller.dispose();
+    super.dispose();
+  }
+
+  @override
   Widget build(BuildContext context) {
     return AnimatedBuilder(
       animation: controller,

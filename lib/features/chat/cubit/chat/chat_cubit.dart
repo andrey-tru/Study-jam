@@ -83,7 +83,7 @@ class ChatCubit extends Cubit<ChatState> {
     Iterable<ChatMessageDto> messages;
 
     if (state.urlImg != null) {
-      messageText += '\n${state.urlImg}';
+      messageText = '$message${state.urlImg}';
     }
 
     if (state.location == null) {

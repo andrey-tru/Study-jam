@@ -90,6 +90,12 @@ class _CircularBtnState extends State<CircularBtn>
   }
 
   @override
+  void dispose() {
+    controller.dispose();
+    super.dispose();
+  }
+
+  @override
   Widget build(BuildContext context) {
     return AnimatedBuilder(
       animation: controller,

@@ -12,7 +12,7 @@ import 'package:surf_study_jam/surf_study_jam.dart';
 /// The only tool needed to implement the chat.
 abstract class IChatRepository {
   /// Maximum length of one's message content,
-  static const int maxMessageLength = 80;
+  static const int maxMessageLength = 200;
 
   /// Returns messages [ChatMessageDto] from a source.
   ///

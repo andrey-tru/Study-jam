@@ -161,16 +161,6 @@ class _ChatMessage extends StatelessWidget {
                               color: Colors.white,
                             ),
                           ),
-                        if (urls.isNotEmpty)
-                          for (final String url in urls)
-                            Padding(
-                              padding:
-                                  const EdgeInsets.symmetric(vertical: 10.0),
-                              child: Image.network(
-                                url,
-                                width: 100,
-                              ),
-                            ),
                         GestureDetector(
                           onTap: () => _openMap(message!),
                           child: const Text(
@@ -189,6 +179,15 @@ class _ChatMessage extends StatelessWidget {
                         color: Colors.white,
                       ),
                     ),
+                  if (urls.isNotEmpty)
+                    for (final String url in urls)
+                      Padding(
+                        padding: const EdgeInsets.symmetric(vertical: 10.0),
+                        child: Image.network(
+                          url,
+                          width: 100,
+                        ),
+                      ),
                 ],
               ),
             ),
