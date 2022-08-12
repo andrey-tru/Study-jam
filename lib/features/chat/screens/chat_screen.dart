@@ -61,30 +61,58 @@ class _ChatScreenState extends State<ChatScreen> {
   }
 }
 
-class CircularBtn extends StatelessWidget {
+class CircularBtn extends StatefulWidget {
   const CircularBtn({super.key, required this.icons, required this.onTap});
 
   final IconData icons;
   final VoidCallback onTap;
 
   @override
-  Widget build(BuildContext context) {
-    const double size = 70.0;
+  State<CircularBtn> createState() => _CircularBtnState();
+}
 
-    return GestureDetector(
-      onTap: onTap,
-      child: Container(
-        width: size,
-        height: size,
-        decoration: BoxDecoration(
-          borderRadius: BorderRadius.circular(100),
-          color: Colors.green,
-        ),
-        child: Icon(
-          icons,
-          color: Colors.white,
-        ),
-      ),
+class _CircularBtnState extends State<CircularBtn>
+    with SingleTickerProviderStateMixin {
+  late final AnimationController controller = AnimationController(
+    duration: const Duration(seconds: 4),
+    vsync: this,
+  );
+
+  late Animation<Color?> animation;
+
+  @override
+  void initState() {
+    controller.repeat(reverse: true);
+    animation =
+        ColorTween(begin: Colors.white, end: Colors.black).animate(controller);
+
+    super.initState();
+  }
+
+  @override
+  Widget build(BuildContext context) {
+    return AnimatedBuilder(
+      animation: controller,
+      builder: (BuildContext context, Widget? child) {
+        const double size = 70.0;
+
+        return GestureDetector(
+          onTap: widget.onTap,
+          child: Container(
+            width: size,
+            height: size,
+            decoration: BoxDecoration(
+              borderRadius: BorderRadius.circular(100),
+              color: Colors.green,
+              border: Border.all(width: 2.0),
+            ),
+            child: Icon(
+              widget.icons,
+              color: animation.value,
+            ),
+          ),
+        );
+      },
     );
   }
 }

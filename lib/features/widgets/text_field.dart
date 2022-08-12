@@ -36,7 +36,7 @@ class UiTextField extends StatelessWidget {
           isDense: true,
           isCollapsed: true,
           hintStyle: const TextStyle(
-            fontSize: 16.0,
+            fontSize: 20.0,
             fontWeight: FontWeight.w400,
             color: Colors.white,
           ),
@@ -52,7 +52,7 @@ class UiTextField extends StatelessWidget {
         showErrors: (AbstractControl<dynamic> control) => false,
         style: const TextStyle(
           color: Colors.white,
-          fontSize: 16.0,
+          fontSize: 20.0,
           fontWeight: FontWeight.w400,
         ),
       ),

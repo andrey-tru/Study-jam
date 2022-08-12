@@ -81,4 +81,5 @@ class AuthCubit extends Cubit<AuthState> {
 
     localStorageService.remove('token');
   }
+
 }

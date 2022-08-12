@@ -4,6 +4,7 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:get_it/get_it.dart';
 import 'package:reactive_forms/reactive_forms.dart';
 import 'package:surf_practice_chat_flutter/features/auth/auth.dart';
+import 'package:surf_practice_chat_flutter/features/auth/widget/widget.dart';
 import 'package:surf_practice_chat_flutter/features/chat/chat.dart';
 import 'package:surf_practice_chat_flutter/features/widgets/widgets.dart';
 import 'package:surf_study_jam/surf_study_jam.dart';
@@ -41,6 +42,7 @@ class _AuthScreenState extends State<AuthScreen> {
   @override
   void initState() {
     GetIt.I<AuthCubit>().tokenVerification();
+
     super.initState();
   }
 
@@ -71,6 +73,8 @@ class _AuthScreenState extends State<AuthScreen> {
                 child: Column(
                   mainAxisAlignment: MainAxisAlignment.center,
                   children: <Widget>[
+                    const AnimationText(),
+                    const SizedBox(height: 40),
                     UiTextField(
                       margin: const EdgeInsets.only(bottom: 30.0),
                       formControlName: 'login',
