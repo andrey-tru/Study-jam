@@ -25,7 +25,7 @@ dependencies:
   map_launcher: ^2.3.0+1
   reactive_forms: ^14.1.0
   shared_preferences: ^2.0.15
-  surf_study_jam: ^0.1.0
+  surf_study_jam: ^0.2.0
 
 dev_dependencies:
   flutter_test:
