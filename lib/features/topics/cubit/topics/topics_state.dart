@@ -7,5 +7,6 @@ class TopicsState with _$TopicsState {
     ChatTopicsRepository? chatTopicsRepository,
     @Default(<ChatTopicDto>[]) Iterable<ChatTopicDto> chats,
     int? idActive,
+    @Default('Incognito user') String userName,
   }) = _TopicsState;
 }

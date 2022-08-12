@@ -22,7 +22,11 @@ class TopicsAvatar extends StatelessWidget {
       ),
       child: Center(
         child: Text(
-          '${chat.name!.split(' ').last[1]}${chat.name!.split(' ').last[2]}',
+          chat.name == null
+              ? 'Incognito chat'
+              : chat.name!.split(' ').last[0] == '"'
+                  ? chat.name!.split(' ').last[1]
+                  : chat.name!.split(' ').last[0],
           style: const TextStyle(
             color: Colors.white,
             fontWeight: FontWeight.bold,

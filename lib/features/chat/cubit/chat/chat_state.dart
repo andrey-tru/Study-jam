@@ -9,5 +9,6 @@ class ChatState with _$ChatState {
     ChatGeolocationDto? location,
     @Default(<String, dynamic>{}) Map<String, dynamic> userColor,
     String? urlImg,
+    @Default('Incognito user') String userName,
   }) = _ChatState;
 }

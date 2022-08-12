@@ -49,6 +49,17 @@ class ChatCubit extends Cubit<ChatState> {
               Random().nextInt(Colors.primaries.length)
         });
       }
+
+      if (message.chatUserDto is ChatUserLocalDto) {
+        GetIt.I<TopicsCubit>().userName(
+          message.chatUserDto.name ?? 'Incognito user',
+        );
+        emit(
+          state.copyWith(
+            userName: message.chatUserDto.name ?? 'Incognito user',
+          ),
+        );
+      }
     }
 
     GetIt.I<TopicsCubit>().activeChat(

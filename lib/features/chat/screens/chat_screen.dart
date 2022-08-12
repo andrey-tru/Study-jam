@@ -1,6 +1,5 @@
 import 'package:flutter/material.dart';
 import 'package:get_it/get_it.dart';
-import 'package:surf_practice_chat_flutter/features/auth/auth.dart';
 import 'package:surf_practice_chat_flutter/features/chat/chat.dart';
 import 'package:surf_practice_chat_flutter/features/topics/topics.dart';
 
@@ -23,12 +22,6 @@ class _ChatScreenState extends State<ChatScreen> {
 
   void _onSendPressed(String messageText) {
     GetIt.I<ChatCubit>().sendMessage(messageText);
-  }
-
-  void _onOut() {
-    GetIt.I<AuthCubit>().signOut();
-    Navigator.pop(context);
-    // Icons.output
   }
 
   @override

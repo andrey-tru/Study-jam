@@ -36,4 +36,8 @@ class TopicsCubit extends Cubit<TopicsState> {
   void activeChat(int id) {
     emit(state.copyWith(idActive: id));
   }
+
+  void userName(String name) {
+    emit(state.copyWith(userName: name));
+  }
 }
