@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:get_it/get_it.dart';
+import 'package:surf_practice_chat_flutter/features/chat/cubit/cubit.dart';
 import 'package:surf_practice_chat_flutter/features/topics/topics.dart';
 import 'package:surf_practice_chat_flutter/features/widgets/widgets.dart';
 
@@ -31,10 +32,37 @@ class _TopicsScreenState extends State<TopicsScreen> {
           }
           return Column(
             children: <Widget>[
+              const SizedBox(height: 100.0),
               ...state.chats.map(
-                (ChatTopicDto chat) => Text(
-                  chat.name!,
-                  style: const TextStyle(color: Colors.white),
+                (ChatTopicDto chat) => GestureDetector(
+                  onTap: () {
+                    GetIt.I<ChatCubit>().getMessages(chat.id);
+                    Navigator.pop(context);
+                  },
+                  child: Container(
+                    margin: const EdgeInsets.symmetric(
+                      vertical: 5.0,
+                      horizontal: 10.0,
+                    ),
+                    padding: const EdgeInsets.all(10.0),
+                    decoration: BoxDecoration(
+                      borderRadius: BorderRadius.circular(20.0),
+                      color: chat.id == state.idActive
+                          ? Colors.green
+                          : Colors.green[900],
+                    ),
+                    child: Row(
+                      children: <Widget>[
+                        TopicsAvatar(
+                          chat: chat,
+                        ),
+                        Text(
+                          chat.name!,
+                          style: const TextStyle(color: Colors.white),
+                        ),
+                      ],
+                    ),
+                  ),
                 ),
               ),
             ],

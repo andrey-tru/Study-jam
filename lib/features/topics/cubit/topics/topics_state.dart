@@ -6,5 +6,6 @@ class TopicsState with _$TopicsState {
     @Default(false) bool isLoading,
     ChatTopicsRepository? chatTopicsRepository,
     @Default(<ChatTopicDto>[]) Iterable<ChatTopicDto> chats,
+    int? idActive,
   }) = _TopicsState;
 }

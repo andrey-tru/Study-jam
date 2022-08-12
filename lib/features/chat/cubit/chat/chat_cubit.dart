@@ -18,8 +18,12 @@ part 'chat_cubit.freezed.dart';
 class ChatCubit extends Cubit<ChatState> {
   ChatCubit() : super(const ChatState());
 
-  Future<void> getMessages() async {
+  Future<void> getMessages([int? chatId]) async {
     emit(state.copyWith(isLoading: true));
+
+    if (chatId == null) {
+      await GetIt.I<TopicsCubit>().getTopics();
+    }
 
     final SharedPreferences localStorageService =
         await SharedPreferences.getInstance();
@@ -34,7 +38,9 @@ class ChatCubit extends Cubit<ChatState> {
     }
 
     final Iterable<ChatMessageDto> messages =
-        await state.chatRepository!.getMessages();
+        await state.chatRepository!.getMessages(
+      chatId ?? GetIt.I<TopicsCubit>().state.chats.elementAt(0).id,
+    );
 
     for (final ChatMessageDto message in messages) {
       if (!userColor.keys.contains(message.chatUserDto.name)) {
@@ -45,8 +51,11 @@ class ChatCubit extends Cubit<ChatState> {
       }
     }
 
-    await localStorageService.setString('userColor', jsonEncode(userColor));
+    GetIt.I<TopicsCubit>().activeChat(
+      chatId ?? GetIt.I<TopicsCubit>().state.chats.elementAt(0).id,
+    );
 
+    await localStorageService.setString('userColor', jsonEncode(userColor));
 
     emit(
       state.copyWith(
@@ -57,7 +66,7 @@ class ChatCubit extends Cubit<ChatState> {
     );
   }
 
-  Future<void> sendMessage(String message) async {
+  Future<void> sendMessage(String message, [int? chatId]) async {
     emit(state.copyWith(isLoading: true));
     String messageText = message;
     Iterable<ChatMessageDto> messages;
@@ -67,7 +76,7 @@ class ChatCubit extends Cubit<ChatState> {
     }
 
     if (state.location == null) {
-      messages = await state.chatRepository!.sendMessage(messageText);
+      messages = await state.chatRepository!.sendMessage(messageText, chatId);
     } else {
       messages = await state.chatRepository!.sendGeolocationMessage(
         location: state.location!,
