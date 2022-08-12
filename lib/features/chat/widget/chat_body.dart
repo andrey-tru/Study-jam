@@ -181,13 +181,14 @@ class _ChatMessage extends StatelessWidget {
                     ),
                   if (urls.isNotEmpty)
                     for (final String url in urls)
-                      Padding(
-                        padding: const EdgeInsets.symmetric(vertical: 10.0),
-                        child: Image.network(
-                          url,
-                          width: 100,
+                      if (url.contains('.jpg') || url.contains('.png'))
+                        Padding(
+                          padding: const EdgeInsets.symmetric(vertical: 10.0),
+                          child: Image.network(
+                            url,
+                            width: 100,
+                          ),
                         ),
-                      ),
                 ],
               ),
             ),
