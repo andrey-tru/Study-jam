@@ -15,13 +15,24 @@ part 'auth_cubit.freezed.dart';
 class AuthCubit extends Cubit<AuthState> {
   AuthCubit() : super(const AuthState());
 
-  final AuthRepository _authRepository = AuthRepository(StudyJamClient());
+  AuthRepository _authRepository = AuthRepository(StudyJamClient());
 
   Future<void> tokenVerification() async {
     emit(state.copyWith(isLoading: true));
     final SharedPreferences localStorageService =
         await SharedPreferences.getInstance();
 
+    if (localStorageService.getString('token') != null &&
+        state.authRepository == null) {
+      _authRepository = AuthRepository(
+        StudyJamClient()
+            .getAuthorizedClient(localStorageService.getString('token')!),
+      );
+
+      emit(
+        state.copyWith(authRepository: _authRepository),
+      );
+    }
     emit(
       state.copyWith(
         token: localStorageService.getString('token'),
@@ -43,12 +54,17 @@ class AuthCubit extends Cubit<AuthState> {
     if (signIn.token != null) {
       await localStorageService.setString('token', signIn.token!);
 
+      _authRepository = AuthRepository(
+        StudyJamClient().getAuthorizedClient(signIn.token!),
+      );
+
       NotifyService.showSuccessNotify('success');
 
       emit(
         state.copyWith(
           token: localStorageService.getString('token'),
           isLoading: false,
+          authRepository: _authRepository,
         ),
       );
     } else {
@@ -57,12 +73,11 @@ class AuthCubit extends Cubit<AuthState> {
   }
 
   Future<void> signOut() async {
-    emit(state.copyWith(token: null));
+    state.authRepository!.signOut();
+    emit(state.copyWith(token: null, authRepository: null));
 
     final SharedPreferences localStorageService =
         await SharedPreferences.getInstance();
-
-    // await _authRepository.signOut();
 
     localStorageService.remove('token');
   }

@@ -7,6 +7,7 @@ class UiTextField extends StatelessWidget {
     this.formControlName,
     this.margin,
     this.padding,
+    this.obscureText = false,
     this.hintText,
     this.keyboardType,
     this.textInputAction,
@@ -15,6 +16,7 @@ class UiTextField extends StatelessWidget {
   final EdgeInsetsGeometry? margin;
   final EdgeInsetsGeometry? padding;
   final String? formControlName;
+  final bool obscureText;
   final String? hintText;
   final TextInputType? keyboardType;
   final TextInputAction? textInputAction;
@@ -27,6 +29,7 @@ class UiTextField extends StatelessWidget {
       child: ReactiveTextField<String>(
         keyboardType: keyboardType,
         formControlName: formControlName,
+        obscureText: obscureText,
         textInputAction: textInputAction,
         decoration: InputDecoration(
           contentPadding: EdgeInsets.zero,

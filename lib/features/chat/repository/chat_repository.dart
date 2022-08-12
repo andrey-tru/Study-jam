@@ -47,6 +47,7 @@ abstract class IChatRepository {
   Future<Iterable<ChatMessageDto>> sendGeolocationMessage({
     required ChatGeolocationDto location,
     String? message,
+    required int chatId,
   });
 
   /// Retrieves chat's user via his [userId].
@@ -78,7 +79,12 @@ class ChatRepository implements IChatRepository {
     if (message.length > IChatRepository.maxMessageLength) {
       throw InvalidMessageException('Message "$message" is too large.');
     }
-    await _studyJamClient.sendMessage(SjMessageSendsDto(text: message));
+    await _studyJamClient.sendMessage(
+      SjMessageSendsDto(
+        text: message,
+        chatId: chatId,
+      ),
+    );
 
     final Iterable<ChatMessageDto> messages = await _fetchAllMessages(chatId);
 
@@ -98,6 +104,7 @@ class ChatRepository implements IChatRepository {
       SjMessageSendsDto(
         text: message,
         geopoint: location.toGeopoint(),
+        chatId: chatId,
       ),
     );
 

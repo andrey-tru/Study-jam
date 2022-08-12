@@ -34,6 +34,10 @@ class _AuthScreenState extends State<AuthScreen> {
     ),
   });
 
+  void _onSignIn(FormGroup form) {
+    GetIt.I<AuthCubit>().signIn(form);
+  }
+
   @override
   void initState() {
     GetIt.I<AuthCubit>().tokenVerification();
@@ -45,17 +49,21 @@ class _AuthScreenState extends State<AuthScreen> {
     return Scaffold(
       body: ColoredBox(
         color: Colors.black87,
-        child: BlocConsumer<AuthCubit, AuthState>(
+        child: BlocBuilder<AuthCubit, AuthState>(
           bloc: GetIt.I<AuthCubit>(),
-          listener: (BuildContext context, AuthState state) {
-            if (state.token != null) {
-              _pushToChat(context, state.token!);
-            }
-          },
           builder: (BuildContext context, AuthState state) {
             if (state.isLoading) {
               const UiLoader();
             }
+
+            if (state.token != null) {
+              return ChatScreen(
+                chatRepository: ChatRepository(
+                  StudyJamClient().getAuthorizedClient(state.token!),
+                ),
+              );
+            }
+
             return ReactiveForm(
               formGroup: loginFormGroup,
               child: Padding(
@@ -67,24 +75,20 @@ class _AuthScreenState extends State<AuthScreen> {
                       margin: const EdgeInsets.only(bottom: 30.0),
                       formControlName: 'login',
                       hintText: tr('auth.email'),
-                      // keyboardType: TextInputType.emailAddress,
                       textInputAction: TextInputAction.next,
                     ),
                     UiTextField(
                       margin: const EdgeInsets.only(bottom: 30.0),
                       formControlName: 'password',
                       hintText: tr('auth.password'),
-                      // keyboardType: TextInputType.emailAddress,
-                      textInputAction: TextInputAction.next,
+                      obscureText: true,
+                      textInputAction: TextInputAction.done,
                     ),
                     ReactiveFormConsumer(
                       builder: (BuildContext context, FormGroup form, _) {
                         return UiButton(
                           title: tr('auth.btn'),
-                          onPressed: () {
-                            // pri
-                            GetIt.I<AuthCubit>().signIn(form);
-                          },
+                          onPressed: () => _onSignIn(form),
                         );
                       },
                     ),
@@ -98,18 +102,18 @@ class _AuthScreenState extends State<AuthScreen> {
     );
   }
 
-  void _pushToChat(BuildContext context, String token) {
-    Navigator.push<ChatScreen>(
-      context,
-      MaterialPageRoute<ChatScreen>(
-        builder: (_) {
-          return ChatScreen(
-            chatRepository: ChatRepository(
-              StudyJamClient().getAuthorizedClient(token),
-            ),
-          );
-        },
-      ),
-    );
-  }
+  // void _pushToChat(BuildContext context, String token) {
+  //   Navigator.push<ChatScreen>(
+  //     context,
+  //     MaterialPageRoute<ChatScreen>(
+  //       builder: (_) {
+  //         return ChatScreen(
+  //           chatRepository: ChatRepository(
+  //             StudyJamClient().getAuthorizedClient(token),
+  //           ),
+  //         );
+  //       },
+  //     ),
+  //   );
+  // }
 }

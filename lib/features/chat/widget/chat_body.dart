@@ -4,6 +4,7 @@ import 'package:get_it/get_it.dart';
 import 'package:html_unescape/html_unescape.dart';
 import 'package:map_launcher/map_launcher.dart';
 import 'package:surf_practice_chat_flutter/features/chat/chat.dart';
+import 'package:surf_practice_chat_flutter/features/widgets/widgets.dart';
 
 class ChatBody extends StatelessWidget {
   const ChatBody();
@@ -13,12 +14,17 @@ class ChatBody extends StatelessWidget {
     return BlocBuilder<ChatCubit, ChatState>(
       bloc: GetIt.I<ChatCubit>(),
       builder: (BuildContext context, ChatState state) {
+        if (state.isLoading) {
+          return const UiLoader();
+        }
+
         return ListView.builder(
           padding: EdgeInsets.zero,
           reverse: true,
           itemCount: state.messages.length,
           itemBuilder: (_, int index) {
             return _ChatMessage(
+              userName: state.userName,
               chatData:
                   state.messages.elementAt(state.messages.length - 1 - index),
             );
@@ -30,8 +36,9 @@ class ChatBody extends StatelessWidget {
 }
 
 class _ChatMessage extends StatelessWidget {
-  const _ChatMessage({required this.chatData});
+  const _ChatMessage({required this.userName, required this.chatData});
 
+  final String userName;
   final ChatMessageDto chatData;
 
   Future<void> _openMap(ChatMessageGeolocationDto message) async {
@@ -71,11 +78,11 @@ class _ChatMessage extends StatelessWidget {
       child: Row(
         crossAxisAlignment: CrossAxisAlignment.start,
         children: <Widget>[
-          if (chatData.chatUserDto is! ChatUserLocalDto)
+          if (chatData.chatUserDto.name != userName)
             _ChatAvatar(
               userData: chatData.chatUserDto.name ?? 'Incognito user',
             ),
-          if (chatData.chatUserDto is! ChatUserLocalDto)
+          if (chatData.chatUserDto.name != userName)
             const SizedBox(width: 10),
           Expanded(
             child: Container(
@@ -145,9 +152,9 @@ class _ChatMessage extends StatelessWidget {
               ),
             ),
           ),
-          if (chatData.chatUserDto is ChatUserLocalDto)
+          if (chatData.chatUserDto.name == userName)
             const SizedBox(width: 10),
-          if (chatData.chatUserDto is ChatUserLocalDto)
+          if (chatData.chatUserDto.name == userName)
             _ChatAvatar(
               userData: chatData.chatUserDto.name ?? 'Incognito user',
             ),

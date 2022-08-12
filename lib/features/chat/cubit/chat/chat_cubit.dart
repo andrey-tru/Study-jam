@@ -77,7 +77,7 @@ class ChatCubit extends Cubit<ChatState> {
     );
   }
 
-  Future<void> sendMessage(String message, [int? chatId]) async {
+  Future<void> sendMessage(String message) async {
     emit(state.copyWith(isLoading: true));
     String messageText = message;
     Iterable<ChatMessageDto> messages;
@@ -87,11 +87,13 @@ class ChatCubit extends Cubit<ChatState> {
     }
 
     if (state.location == null) {
-      messages = await state.chatRepository!.sendMessage(messageText, chatId);
+      messages = await state.chatRepository!
+          .sendMessage(messageText, GetIt.I<TopicsCubit>().state.idActive);
     } else {
       messages = await state.chatRepository!.sendGeolocationMessage(
         location: state.location!,
         message: messageText,
+        chatId: GetIt.I<TopicsCubit>().state.idActive!,
       );
 
       emit(state.copyWith(location: null));
